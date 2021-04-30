@@ -1,0 +1,276 @@
+---
+title: Z(log) Transformation for Laboratory Measurements
+output:
+    rmarkdown::html_vignette:
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Z(log) Transformation for Laboratory Measurements}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+bibliography: bibliography.bib
+---
+
+# Introduction
+
+The `zlog` package offers functions to transform laboratory measurements into
+standardised $z$ or $z(log)$-values as suggested in @hoffmann2017.
+Therefore the lower and upper reference limits are needed. If these are not
+known they could estimated from a given sample.
+
+# Z or Z(log) Transformation
+
+@hoffmann2017 define $z$ as follows:
+
+$$z = (x - (limits_1 + limits_2 )/2) * 3.92/(limits_2 - limits_1)$$
+
+Consequently the $z(log)$ is defined as:
+
+$$zlog = (\log(x) - (\log(limits_1) + \log(limits_2))/2) * 3.92/(\log(limits_2) - \log(limits_1))$$
+
+Where $x$ is the measured laboratory value and $limits_1$ and $limits_2$ are
+the lower and upper reference limit, respectively.
+
+Example data and reference limits are taken from @hoffmann2017, Table 2.
+
+```{r zlog}
+library("zlog")
+
+albumin <- c(42, 34, 38, 43, 50, 42, 27, 31, 24)
+z(albumin, limits = c(35, 52))
+zlog(albumin, limits = c(35, 52))
+```
+
+# Inverse Z or Z(log) Transformation/Undo Transformation
+
+```{r izlog}
+izlog(zlog(albumin, limits = c(35, 52)), limits = c(35, 52))
+```
+
+# Z(log) Dependent Colour Gradient
+
+@hoffmann2017 suggested a colour gradient to visualise laboratory measurements
+for the user.
+
+```{r zcol, echo = FALSE, out.width = "95%", fig.width = 10, fig.height = 1, fig.align = "center"}
+z <- -10:10
+oldpar <- par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0))
+image(matrix(z, ncol = 1), col = zcol(z), axes = FALSE)
+text(seq(0, 1, length.out=length(z)), 0, label = z)
+par(oldpar)
+```
+
+It could be used to highlight the values in a table:
+
+```{r zcoltable, echo = FALSE, result = "asis"}
+bilirubin <- c(11, 9, 2, 5, 22, 42, 37, 200, 20)
+zloga <- zlog(albumin, limits = c(35, 52))
+zlogb <- zlog(bilirubin, limits = c(2, 21))
+d <- data.frame(
+    Category = c(
+        rep(c(
+            "blood donor",
+            "hepatitis without cirrhosis",
+            "hepatitis with cirrhosis"
+            ),
+            each = 3
+        )
+    ),
+    albumin = albumin,
+    zloga = zloga,
+    bilirubin = bilirubin,
+    zlogb = zlogb
+)
+d$albumin <- kableExtra::cell_spec(
+    d$albumin, background = zcol(zloga), align = "right"
+)
+d$bilirubin <- kableExtra::cell_spec(
+    d$bilirubin, background = zcol(zlogb), align = "right"
+)
+kableExtra::kable_classic(
+    kableExtra::kbl(
+        d,
+        col.names = c(
+            "Category",
+            "albumin", "zlog(albumin)", "bilirubin", "zlog(bilirubin)"
+        ),
+        digits = 2,
+        escape = FALSE,
+        caption = paste0(
+            "Table reproduced from @hoffmann2017, Table 2, limits used: ",
+            "albumin 35-52 g/l, bilirubin 2-21 µmol/l."
+        )
+    ),
+    "basic"
+)
+```
+
+# Estimate Reference Limits
+
+The `reference_limits` functions calculates the lower and upper 2.5 or 97.5
+(or a user given probability) quantiles:
+
+```{r reference_limits}
+reference_limits(albumin)
+reference_limits(albumin, probs = c(0.05, 0.95))
+
+exp(reference_limits(log(albumin)))
+```
+
+# Working with Reference Tables
+
+Most laboratories use their own age- and sex-specific reference limits.
+The `lookup_limits` function could be used to find the correct reference limit.
+
+```{r reference_table}
+# toy example
+reference <- data.frame(
+    param = c("albumin", rep("bilirubin", 4)),
+    age = c(0, 1, 2, 3, 7),     # days
+    sex = "both",
+    units = c("g/l", rep("µmol/l", 4)), # ignored
+    lower = c(35, rep(NA, 4)),  # no real reference values
+    upper = c(52, 5, 8, 13, 18) # no real reference values
+)
+knitr::kable(reference)
+
+# lookup albumin reference values for 18 year old woman
+lookup_limits(
+    age = 18 * 365.25,
+    sex = "female",
+    table = reference[reference$param == "albumin",]
+)
+
+# lookup albumin and bilirubin values for 18 year old woman
+lookup_limits(
+    age = 18 * 365.25,
+    sex = "female",
+    table = reference
+)
+
+# lookup bilirubin reference values for infants
+lookup_limits(
+    age = 0:8,
+    sex = rep(c("female", "male"), 5:4),
+    table = reference[reference$param == "bilirubin",]
+)
+```
+
+# Missing Reference Limits
+
+Sometimes reference limits are not specified. That is often the case for
+biomarkers that are related to infection or cancer. Using zero as lower
+boundary results in skewed distributions [@hoffmann2017, fig. 7].
+@haeckel2015 suggested to set the lower reference limit to 15 % of
+the upper one.
+
+```{r missing_reference}
+# use default fractions
+set_missing_limits(reference)
+
+# set fractions manually
+set_missing_limits(reference, fraction = c(0.2, 5))
+```
+
+# Impute Missing Laboratory Measurements
+
+If laboratory measurements are missing they could be imputed using *"normal"*
+values from the reference table. Using the `"logmean"` (default) or `"mean"`
+reference value (default) will result in a $zlog$ or $z$-value of zero,
+respectively.
+
+```{r impute_missing_values}
+x <- data.frame(
+    age = c(40, 50),
+    sex = c("female", "male"),
+    albumin = c(42, NA)
+)
+x
+z_df(impute_df(x, reference, method = "mean"), reference)
+zlog_df(impute_df(x, reference), reference)
+```
+
+# `PBC` Example
+
+For demonstration we choose the `pbc` dataset from the `survival` package
+and exclude all non-laboratory measurements except *age* and *sex*:
+
+```{r pbc_load}
+library("survival")
+data("pbc")
+labs <- c(
+    "bili", "chol", "albumin", "copper", "alk.phos", "ast", "trig",
+    "platelet", "protime"
+)
+pbc <- pbc[, c("age", "sex", labs)]
+knitr::kable(head(pbc), digits = 1)
+```
+
+Next we estimate all reference limits from the data. We want to use sex-specific
+values for copper and aspartate aminotransferase (`"ast"`).
+
+```{r pbc_reference_limits}
+## replicate copper and ast 2 times, use the others just once
+param <- rep(labs, ifelse(labs %in% c("copper", "ast"), 2, 1))
+sex <- rep_len("both", length(param))
+
+## replace sex == both with female and male for copper and ast
+sex[param %in% c("copper", "ast")] <- c("f", "m")
+
+## create data.frame, we ignore age-specific values for now and set age to zero
+## (means applicable for all ages)
+reference <- data.frame(
+    param = param, age = 0, sex = sex, lower = NA, upper = NA
+)
+
+## estimate reference limits from sample data
+for (i in seq_len(nrow(reference))) {
+    reference[i, c("lower", "upper")] <-
+        if (reference$sex[i] == "both")
+            reference_limits(pbc[reference$param[i]])
+        else
+            reference_limits(pbc[pbc$sex == reference$sex[i], reference$param[i]])
+}
+knitr::kable(reference)
+```
+
+The `pbc` dataset contains a few missing values. We impute the with the
+corresponding mean reference value (which is in this example just the sample
+mean but would be in real life the mean of a e.g. healthy subpopulation).
+
+```{r pbc_impute}
+pbc[c(6, 14),]
+pbc <- impute_df(pbc, reference)
+pbc[c(6, 14),]
+```
+
+Subsequently we can convert the laboratory measurements into $z(log)$-values
+using the `zlog_df` function that applies the `zlog` for every `numeric` column
+in a `data.frame` (except the `"age"` column):
+
+```{r pbc_zlog}
+pbc <- zlog_df(pbc, reference)
+```
+
+```{r pbc_table, echo = FALSE}
+pbctbl <- head(pbc, n = 25)
+pbctbl[labs] <- lapply(labs, function(l) {
+    kableExtra::cell_spec(
+        sprintf("%.1f", unlist(pbctbl[l])),
+        background = zcol(unlist(pbctbl[l])),
+        align = "right"
+    )
+})
+
+kableExtra::kable_classic(
+    kableExtra::kbl(pbctbl, digits = 1, escape = FALSE),
+    "basic"
+)
+```
+
+# Session information
+
+```{r si}
+sessionInfo()
+```
+
+# References

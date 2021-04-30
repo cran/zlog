@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Z(log) Transformation for Laboratory Measurements</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Z(log) Transformation for Laboratory Measurements</h1>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The <code>zlog</code> package offers functions to transform laboratory measurements into standardised <span class="math inline">\(z\)</span> or <span class="math inline">\(z(log)\)</span>-values as suggested in <span class="citation">Hoffmann et al. (2017)</span>. Therefore the lower and upper reference limits are needed. If these are not known they could estimated from a given sample.</p>
+</div>
+<div id="z-or-zlog-transformation" class="section level1">
+<h1>Z or Z(log) Transformation</h1>
+<p><span class="citation">Hoffmann et al. (2017)</span> define <span class="math inline">\(z\)</span> as follows:</p>
+<p><span class="math display">\[z = (x - (limits_1 + limits_2 )/2) * 3.92/(limits_2 - limits_1)\]</span></p>
+<p>Consequently the <span class="math inline">\(z(log)\)</span> is defined as:</p>
+<p><span class="math display">\[zlog = (\log(x) - (\log(limits_1) + \log(limits_2))/2) * 3.92/(\log(limits_2) - \log(limits_1))\]</span></p>
+<p>Where <span class="math inline">\(x\)</span> is the measured laboratory value and <span class="math inline">\(limits_1\)</span> and <span class="math inline">\(limits_2\)</span> are the lower and upper reference limit, respectively.</p>
+<p>Example data and reference limits are taken from <span class="citation">Hoffmann et al. (2017)</span>, Table 2.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&quot;zlog&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>albumin &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">42</span>, <span class="dv">34</span>, <span class="dv">38</span>, <span class="dv">43</span>, <span class="dv">50</span>, <span class="dv">42</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">24</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">z</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
+<pre><code>## [1] -0.345876 -2.190548 -1.268212 -0.115292  1.498796 -0.345876 -3.804636
+## [8] -2.882300 -4.496388</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">zlog</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
+<pre><code>## [1] -0.15472223 -2.24698167 -1.14569028  0.07826303  1.57162335 -0.15472223
+## [7] -4.52949253 -3.16160843 -5.69571148</code></pre>
+</div>
+<div id="inverse-z-or-zlog-transformationundo-transformation" class="section level1">
+<h1>Inverse Z or Z(log) Transformation/Undo Transformation</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">izlog</span>(<span class="kw">zlog</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>)), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
+<pre><code>## [1] 42 34 38 43 50 42 27 31 24</code></pre>
+</div>
+<div id="zlog-dependent-colour-gradient" class="section level1">
+<h1>Z(log) Dependent Colour Gradient</h1>
+<p><span class="citation">Hoffmann et al. (2017)</span> suggested a colour gradient to visualise laboratory measurements for the user.</p>
+<p><img src="data:image/png;base64,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" width="95%" style="display: block; margin: auto;" /></p>
+<p>It could be used to highlight the values in a table:</p>
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>
+Table reproduced from <span class="citation">Hoffmann et al. (2017)</span>, Table 2, limits used: albumin 35-52 g/l, bilirubin 2-21 µmol/l.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Category
+</th>
+<th style="text-align:left;">
+albumin
+</th>
+<th style="text-align:right;">
+zlog(albumin)
+</th>
+<th style="text-align:left;">
+bilirubin
+</th>
+<th style="text-align:right;">
+zlog(bilirubin)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+blood donor
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">42</span>
+</td>
+<td style="text-align:right;">
+-0.15
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">11</span>
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+blood donor
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #E3EBF4 !important;text-align: right;">34</span>
+</td>
+<td style="text-align:right;">
+-2.25
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF7 !important;text-align: right;">9</span>
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+blood donor
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FB !important;text-align: right;">38</span>
+</td>
+<td style="text-align:right;">
+-1.15
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #E9EFF6 !important;text-align: right;">2</span>
+</td>
+<td style="text-align:right;">
+-1.96
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hepatitis without cirrhosis
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">43</span>
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFD !important;text-align: right;">5</span>
+</td>
+<td style="text-align:right;">
+-0.43
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hepatitis without cirrhosis
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF4EA !important;text-align: right;">50</span>
+</td>
+<td style="text-align:right;">
+1.57
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDEEDF !important;text-align: right;">22</span>
+</td>
+<td style="text-align:right;">
+2.04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hepatitis without cirrhosis
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">42</span>
+</td>
+<td style="text-align:right;">
+-0.15
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCD7B4 !important;text-align: right;">42</span>
+</td>
+<td style="text-align:right;">
+3.12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hepatitis with cirrhosis
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #8AAAD2 !important;text-align: right;">27</span>
+</td>
+<td style="text-align:right;">
+-4.53
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCDDBF !important;text-align: right;">37</span>
+</td>
+<td style="text-align:right;">
+2.90
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hepatitis with cirrhosis
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #C7D6E9 !important;text-align: right;">31</span>
+</td>
+<td style="text-align:right;">
+-3.16
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F68C26 !important;text-align: right;">200</span>
+</td>
+<td style="text-align:right;">
+5.72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hepatitis with cirrhosis
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #628CC3 !important;text-align: right;">24</span>
+</td>
+<td style="text-align:right;">
+-5.70
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDF0E3 !important;text-align: right;">20</span>
+</td>
+<td style="text-align:right;">
+1.88
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="estimate-reference-limits" class="section level1">
+<h1>Estimate Reference Limits</h1>
+<p>The <code>reference_limits</code> functions calculates the lower and upper 2.5 or 97.5 (or a user given probability) quantiles:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">reference_limits</span>(albumin)</span></code></pre></div>
+<pre><code>## lower upper 
+##  24.6  48.6</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">reference_limits</span>(albumin, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code></pre></div>
+<pre><code>## lower upper 
+##  25.2  47.2</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">exp</span>(<span class="kw">reference_limits</span>(<span class="kw">log</span>(albumin)))</span></code></pre></div>
+<pre><code>##    lower    upper 
+## 24.57207 48.51429</code></pre>
+</div>
+<div id="working-with-reference-tables" class="section level1">
+<h1>Working with Reference Tables</h1>
+<p>Most laboratories use their own age- and sex-specific reference limits. The <code>lookup_limits</code> function could be used to find the correct reference limit.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># toy example</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>reference &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="dt">param =</span> <span class="kw">c</span>(<span class="st">&quot;albumin&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;bilirubin&quot;</span>, <span class="dv">4</span>)),</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">7</span>),     <span class="co"># days</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="dt">sex =</span> <span class="st">&quot;both&quot;</span>,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="dt">units =</span> <span class="kw">c</span>(<span class="st">&quot;g/l&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;µmol/l&quot;</span>, <span class="dv">4</span>)), <span class="co"># ignored</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>    <span class="dt">lower =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">4</span>)),  <span class="co"># no real reference values</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="dt">upper =</span> <span class="kw">c</span>(<span class="dv">52</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">18</span>) <span class="co"># no real reference values</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10"></a>knitr<span class="op">::</span><span class="kw">kable</span>(reference)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+param
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:left;">
+units
+</th>
+<th style="text-align:right;">
+lower
+</th>
+<th style="text-align:right;">
+upper
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+albumin
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:left;">
+g/l
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bilirubin
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:left;">
+µmol/l
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bilirubin
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:left;">
+µmol/l
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bilirubin
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:left;">
+µmol/l
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bilirubin
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:left;">
+µmol/l
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># lookup albumin reference values for 18 year old woman</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">lookup_limits</span>(</span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="dt">age =</span> <span class="dv">18</span> <span class="op">*</span><span class="st"> </span><span class="fl">365.25</span>,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="dt">sex =</span> <span class="st">&quot;female&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="dt">table =</span> reference[reference<span class="op">$</span>param <span class="op">==</span><span class="st"> &quot;albumin&quot;</span>,]</span>
+<span id="cb14-6"><a href="#cb14-6"></a>)</span></code></pre></div>
+<pre><code>##         lower upper
+## albumin    35    52</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># lookup albumin and bilirubin values for 18 year old woman</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">lookup_limits</span>(</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    <span class="dt">age =</span> <span class="dv">18</span> <span class="op">*</span><span class="st"> </span><span class="fl">365.25</span>,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="dt">sex =</span> <span class="st">&quot;female&quot;</span>,</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="dt">table =</span> reference</span>
+<span id="cb16-6"><a href="#cb16-6"></a>)</span></code></pre></div>
+<pre><code>##           lower upper
+## albumin      35    52
+## bilirubin    NA    18</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># lookup bilirubin reference values for infants</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">lookup_limits</span>(</span>
+<span id="cb18-3"><a href="#cb18-3"></a>    <span class="dt">age =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>,</span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="dt">sex =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>), <span class="dv">5</span><span class="op">:</span><span class="dv">4</span>),</span>
+<span id="cb18-5"><a href="#cb18-5"></a>    <span class="dt">table =</span> reference[reference<span class="op">$</span>param <span class="op">==</span><span class="st"> &quot;bilirubin&quot;</span>,]</span>
+<span id="cb18-6"><a href="#cb18-6"></a>)</span></code></pre></div>
+<pre><code>##           lower upper
+## bilirubin    NA    NA
+## bilirubin    NA     5
+## bilirubin    NA     8
+## bilirubin    NA    13
+## bilirubin    NA    13
+## bilirubin    NA    13
+## bilirubin    NA    13
+## bilirubin    NA    18
+## bilirubin    NA    18</code></pre>
+</div>
+<div id="missing-reference-limits" class="section level1">
+<h1>Missing Reference Limits</h1>
+<p>Sometimes reference limits are not specified. That is often the case for biomarkers that are related to infection or cancer. Using zero as lower boundary results in skewed distributions <span class="citation">(Hoffmann et al. 2017, fig. 7)</span>. <span class="citation">Haeckel et al. (2015)</span> suggested to set the lower reference limit to 15 % of the upper one.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># use default fractions</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">set_missing_limits</span>(reference)</span></code></pre></div>
+<pre><code>##       param age  sex  units lower upper
+## 1   albumin   0 both    g/l 35.00    52
+## 2 bilirubin   1 both µmol/l  0.75     5
+## 3 bilirubin   2 both µmol/l  1.20     8
+## 4 bilirubin   3 both µmol/l  1.95    13
+## 5 bilirubin   7 both µmol/l  2.70    18</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># set fractions manually</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">set_missing_limits</span>(reference, <span class="dt">fraction =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="dv">5</span>))</span></code></pre></div>
+<pre><code>##       param age  sex  units lower upper
+## 1   albumin   0 both    g/l  35.0    52
+## 2 bilirubin   1 both µmol/l   1.0     5
+## 3 bilirubin   2 both µmol/l   1.6     8
+## 4 bilirubin   3 both µmol/l   2.6    13
+## 5 bilirubin   7 both µmol/l   3.6    18</code></pre>
+</div>
+<div id="impute-missing-laboratory-measurements" class="section level1">
+<h1>Impute Missing Laboratory Measurements</h1>
+<p>If laboratory measurements are missing they could be imputed using <em>“normal”</em> values from the reference table. Using the <code>&quot;logmean&quot;</code> (default) or <code>&quot;mean&quot;</code> reference value (default) will result in a <span class="math inline">\(zlog\)</span> or <span class="math inline">\(z\)</span>-value of zero, respectively.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">50</span>),</span>
+<span id="cb24-3"><a href="#cb24-3"></a>    <span class="dt">sex =</span> <span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>),</span>
+<span id="cb24-4"><a href="#cb24-4"></a>    <span class="dt">albumin =</span> <span class="kw">c</span>(<span class="dv">42</span>, <span class="ot">NA</span>)</span>
+<span id="cb24-5"><a href="#cb24-5"></a>)</span>
+<span id="cb24-6"><a href="#cb24-6"></a>x</span></code></pre></div>
+<pre><code>##   age    sex albumin
+## 1  40 female      42
+## 2  50   male      NA</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">z_df</span>(<span class="kw">impute_df</span>(x, reference, <span class="dt">method =</span> <span class="st">&quot;mean&quot;</span>), reference)</span></code></pre></div>
+<pre><code>##   age    sex   albumin
+## 1  40 female -0.345876
+## 2  50   male  0.000000</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">zlog_df</span>(<span class="kw">impute_df</span>(x, reference), reference)</span></code></pre></div>
+<pre><code>##   age    sex    albumin
+## 1  40 female -0.1547222
+## 2  50   male  0.0000000</code></pre>
+</div>
+<div id="pbc-example" class="section level1">
+<h1><code>PBC</code> Example</h1>
+<p>For demonstration we choose the <code>pbc</code> dataset from the <code>survival</code> package and exclude all non-laboratory measurements except <em>age</em> and <em>sex</em>:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">library</span>(<span class="st">&quot;survival&quot;</span>)</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="kw">data</span>(<span class="st">&quot;pbc&quot;</span>)</span>
+<span id="cb30-3"><a href="#cb30-3"></a>labs &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb30-4"><a href="#cb30-4"></a>    <span class="st">&quot;bili&quot;</span>, <span class="st">&quot;chol&quot;</span>, <span class="st">&quot;albumin&quot;</span>, <span class="st">&quot;copper&quot;</span>, <span class="st">&quot;alk.phos&quot;</span>, <span class="st">&quot;ast&quot;</span>, <span class="st">&quot;trig&quot;</span>,</span>
+<span id="cb30-5"><a href="#cb30-5"></a>    <span class="st">&quot;platelet&quot;</span>, <span class="st">&quot;protime&quot;</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a>)</span>
+<span id="cb30-7"><a href="#cb30-7"></a>pbc &lt;-<span class="st"> </span>pbc[, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;sex&quot;</span>, labs)]</span>
+<span id="cb30-8"><a href="#cb30-8"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(pbc), <span class="dt">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+bili
+</th>
+<th style="text-align:right;">
+chol
+</th>
+<th style="text-align:right;">
+albumin
+</th>
+<th style="text-align:right;">
+copper
+</th>
+<th style="text-align:right;">
+alk.phos
+</th>
+<th style="text-align:right;">
+ast
+</th>
+<th style="text-align:right;">
+trig
+</th>
+<th style="text-align:right;">
+platelet
+</th>
+<th style="text-align:right;">
+protime
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+58.8
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+14.5
+</td>
+<td style="text-align:right;">
+261
+</td>
+<td style="text-align:right;">
+2.6
+</td>
+<td style="text-align:right;">
+156
+</td>
+<td style="text-align:right;">
+1718.0
+</td>
+<td style="text-align:right;">
+137.9
+</td>
+<td style="text-align:right;">
+172
+</td>
+<td style="text-align:right;">
+190
+</td>
+<td style="text-align:right;">
+12.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56.4
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+<td style="text-align:right;">
+302
+</td>
+<td style="text-align:right;">
+4.1
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+7394.8
+</td>
+<td style="text-align:right;">
+113.5
+</td>
+<td style="text-align:right;">
+88
+</td>
+<td style="text-align:right;">
+221
+</td>
+<td style="text-align:right;">
+10.6
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+70.1
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+<td style="text-align:right;">
+176
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+210
+</td>
+<td style="text-align:right;">
+516.0
+</td>
+<td style="text-align:right;">
+96.1
+</td>
+<td style="text-align:right;">
+55
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+54.7
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+244
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:right;">
+6121.8
+</td>
+<td style="text-align:right;">
+60.6
+</td>
+<td style="text-align:right;">
+92
+</td>
+<td style="text-align:right;">
+183
+</td>
+<td style="text-align:right;">
+10.3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+38.1
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+279
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:right;">
+671.0
+</td>
+<td style="text-align:right;">
+113.2
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+136
+</td>
+<td style="text-align:right;">
+10.9
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+66.3
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+0.8
+</td>
+<td style="text-align:right;">
+248
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+944.0
+</td>
+<td style="text-align:right;">
+93.0
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Next we estimate all reference limits from the data. We want to use sex-specific values for copper and aspartate aminotransferase (<code>&quot;ast&quot;</code>).</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">## replicate copper and ast 2 times, use the others just once</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>param &lt;-<span class="st"> </span><span class="kw">rep</span>(labs, <span class="kw">ifelse</span>(labs <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;copper&quot;</span>, <span class="st">&quot;ast&quot;</span>), <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb31-3"><a href="#cb31-3"></a>sex &lt;-<span class="st"> </span><span class="kw">rep_len</span>(<span class="st">&quot;both&quot;</span>, <span class="kw">length</span>(param))</span>
+<span id="cb31-4"><a href="#cb31-4"></a></span>
+<span id="cb31-5"><a href="#cb31-5"></a><span class="co">## replace sex == both with female and male for copper and ast</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a>sex[param <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;copper&quot;</span>, <span class="st">&quot;ast&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>)</span>
+<span id="cb31-7"><a href="#cb31-7"></a></span>
+<span id="cb31-8"><a href="#cb31-8"></a><span class="co">## create data.frame, we ignore age-specific values for now and set age to zero</span></span>
+<span id="cb31-9"><a href="#cb31-9"></a><span class="co">## (means applicable for all ages)</span></span>
+<span id="cb31-10"><a href="#cb31-10"></a>reference &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb31-11"><a href="#cb31-11"></a>    <span class="dt">param =</span> param, <span class="dt">age =</span> <span class="dv">0</span>, <span class="dt">sex =</span> sex, <span class="dt">lower =</span> <span class="ot">NA</span>, <span class="dt">upper =</span> <span class="ot">NA</span></span>
+<span id="cb31-12"><a href="#cb31-12"></a>)</span>
+<span id="cb31-13"><a href="#cb31-13"></a></span>
+<span id="cb31-14"><a href="#cb31-14"></a><span class="co">## estimate reference limits from sample data</span></span>
+<span id="cb31-15"><a href="#cb31-15"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_len</span>(<span class="kw">nrow</span>(reference))) {</span>
+<span id="cb31-16"><a href="#cb31-16"></a>    reference[i, <span class="kw">c</span>(<span class="st">&quot;lower&quot;</span>, <span class="st">&quot;upper&quot;</span>)] &lt;-</span>
+<span id="cb31-17"><a href="#cb31-17"></a><span class="st">        </span><span class="cf">if</span> (reference<span class="op">$</span>sex[i] <span class="op">==</span><span class="st"> &quot;both&quot;</span>)</span>
+<span id="cb31-18"><a href="#cb31-18"></a>            <span class="kw">reference_limits</span>(pbc[reference<span class="op">$</span>param[i]])</span>
+<span id="cb31-19"><a href="#cb31-19"></a>        <span class="cf">else</span></span>
+<span id="cb31-20"><a href="#cb31-20"></a>            <span class="kw">reference_limits</span>(pbc[pbc<span class="op">$</span>sex <span class="op">==</span><span class="st"> </span>reference<span class="op">$</span>sex[i], reference<span class="op">$</span>param[i]])</span>
+<span id="cb31-21"><a href="#cb31-21"></a>}</span>
+<span id="cb31-22"><a href="#cb31-22"></a>knitr<span class="op">::</span><span class="kw">kable</span>(reference)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+param
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+lower
+</th>
+<th style="text-align:right;">
+upper
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+bili
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+0.4000
+</td>
+<td style="text-align:right;">
+17.3150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chol
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+174.0750
+</td>
+<td style="text-align:right;">
+1086.2250
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+albumin
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+2.5400
+</td>
+<td style="text-align:right;">
+4.2200
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+copper
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+12.8250
+</td>
+<td style="text-align:right;">
+269.2750
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+copper
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:right;">
+23.5000
+</td>
+<td style="text-align:right;">
+388.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+alk.phos
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+504.7500
+</td>
+<td style="text-align:right;">
+9261.7400
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ast
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:right;">
+49.6000
+</td>
+<td style="text-align:right;">
+249.7438
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ast
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:right;">
+55.4775
+</td>
+<td style="text-align:right;">
+208.3350
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+trig
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+52.0250
+</td>
+<td style="text-align:right;">
+279.8000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+platelet
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+95.0000
+</td>
+<td style="text-align:right;">
+470.4000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+protime
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+both
+</td>
+<td style="text-align:right;">
+9.5000
+</td>
+<td style="text-align:right;">
+13.1625
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>pbc</code> dataset contains a few missing values. We impute the with the corresponding mean reference value (which is in this example just the sample mean but would be in real life the mean of a e.g. healthy subpopulation).</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>pbc[<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">14</span>),]</span></code></pre></div>
+<pre><code>##         age sex bili chol albumin copper alk.phos ast trig platelet protime
+## 6  66.25873   f  0.8  248    3.98     50      944  93   63       NA      11
+## 14 56.22177   m  0.8   NA    2.27     43      728  71   NA      156      11</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>pbc &lt;-<span class="st"> </span><span class="kw">impute_df</span>(pbc, reference)</span>
+<span id="cb34-2"><a href="#cb34-2"></a>pbc[<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">14</span>),]</span></code></pre></div>
+<pre><code>##         age sex bili     chol albumin copper alk.phos ast     trig platelet
+## 6  66.25873   f  0.8 248.0000    3.98     50      944  93  63.0000 211.3954
+## 14 56.22177   m  0.8 434.8386    2.27     43      728  71 120.6507 156.0000
+##    protime
+## 6       11
+## 14      11</code></pre>
+<p>Subsequently we can convert the laboratory measurements into <span class="math inline">\(z(log)\)</span>-values using the <code>zlog_df</code> function that applies the <code>zlog</code> for every <code>numeric</code> column in a <code>data.frame</code> (except the <code>&quot;age&quot;</code> column):</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>pbc &lt;-<span class="st"> </span><span class="kw">zlog_df</span>(pbc, reference)</span></code></pre></div>
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:left;">
+bili
+</th>
+<th style="text-align:left;">
+chol
+</th>
+<th style="text-align:left;">
+albumin
+</th>
+<th style="text-align:left;">
+copper
+</th>
+<th style="text-align:left;">
+alk.phos
+</th>
+<th style="text-align:left;">
+ast
+</th>
+<th style="text-align:left;">
+trig
+</th>
+<th style="text-align:left;">
+platelet
+</th>
+<th style="text-align:left;">
+protime
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+58.8
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF1E6 !important;text-align: right;">1.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F8FB !important;text-align: right;">-1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #ECF1F8 !important;text-align: right;">-1.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EF !important;text-align: right;">1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF7 !important;text-align: right;">0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF8F2 !important;text-align: right;">1.0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56.4
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F9FB !important;text-align: right;">-0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDF1E5 !important;text-align: right;">1.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF3E8 !important;text-align: right;">1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.6</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+70.1
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EAEFF7 !important;text-align: right;">-1.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF7 !important;text-align: right;">0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F1 !important;text-align: right;">1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EAEFF7 !important;text-align: right;">-1.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #ECF1F7 !important;text-align: right;">-1.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">0.8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+54.7
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F6FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #E9EFF6 !important;text-align: right;">-2.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF5ED !important;text-align: right;">1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F1F5F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+38.1
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF9 !important;text-align: right;">0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF6 !important;text-align: right;">0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F1 !important;text-align: right;">1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EFF4F9 !important;text-align: right;">-1.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F8FB !important;text-align: right;">-1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+66.3
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF4EB !important;text-align: right;">1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F7FB !important;text-align: right;">-1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFD !important;text-align: right;">-0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F0F4F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+55.5
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF2E7 !important;text-align: right;">1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F1F4F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EE !important;text-align: right;">1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EDF2F8 !important;text-align: right;">-1.7</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+53.1
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #E3EAF4 !important;text-align: right;">-2.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF4EA !important;text-align: right;">1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF8F2 !important;text-align: right;">1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #C1D1E7 !important;text-align: right;">-3.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF8F2 !important;text-align: right;">1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF5ED !important;text-align: right;">1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+42.5
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF7 !important;text-align: right;">0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFD !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF6 !important;text-align: right;">0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+70.6
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF3E9 !important;text-align: right;">1.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EEF3F8 !important;text-align: right;">-1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F5FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F1 !important;text-align: right;">1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FB !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF6 !important;text-align: right;">0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.3</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+53.7
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F7FB !important;text-align: right;">-1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDF0E4 !important;text-align: right;">1.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F9FB !important;text-align: right;">-0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF7 !important;text-align: right;">0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">0.8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+59.1
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF7 !important;text-align: right;">0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF6 !important;text-align: right;">0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EDF2F8 !important;text-align: right;">-1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FAFC !important;text-align: right;">-0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D8E2F0 !important;text-align: right;">-2.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDE9D5 !important;text-align: right;">2.4</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+45.7
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F5FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EF !important;text-align: right;">1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFC !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FAFC !important;text-align: right;">-0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.6</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56.2
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D3DFEE !important;text-align: right;">-2.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F7FB !important;text-align: right;">-1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F1F5F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8F9FC !important;text-align: right;">-0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+64.6
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F6FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EF !important;text-align: right;">1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF5ED !important;text-align: right;">1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDEFE2 !important;text-align: right;">1.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FAFC !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.4
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F5FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EFF3F9 !important;text-align: right;">-1.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F4 !important;text-align: right;">0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F0F4F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EEF2F8 !important;text-align: right;">-1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFD !important;text-align: right;">-0.4</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+52.2
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EF !important;text-align: right;">1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFD !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8F9FC !important;text-align: right;">-0.8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+53.9
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF4EB !important;text-align: right;">1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EAF0F7 !important;text-align: right;">-1.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FA !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCDBBC !important;text-align: right;">3.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F5F8FB !important;text-align: right;">-1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDEBD9 !important;text-align: right;">2.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F0 !important;text-align: right;">1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF5 !important;text-align: right;">0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EF !important;text-align: right;">1.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+49.6
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F5FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF6 !important;text-align: right;">0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FAFC !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFD !important;text-align: right;">-0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+60.0
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF6 !important;text-align: right;">0.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF7 !important;text-align: right;">0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F1 !important;text-align: right;">1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF9 !important;text-align: right;">0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF9 !important;text-align: right;">0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF8F2 !important;text-align: right;">1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDF1E5 !important;text-align: right;">1.8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+64.2
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F0F4F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FB !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F0 !important;text-align: right;">1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F4F7FB !important;text-align: right;">-1.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F3F6FA !important;text-align: right;">-1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F1F4F9 !important;text-align: right;">-1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF7F1 !important;text-align: right;">1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF9 !important;text-align: right;">0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56.3
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF9 !important;text-align: right;">0.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F6F8FB !important;text-align: right;">-1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF9F5 !important;text-align: right;">0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCE2CA !important;text-align: right;">2.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F8FAFC !important;text-align: right;">-0.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #ECF1F7 !important;text-align: right;">-1.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFC !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF7 !important;text-align: right;">0.4</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56.0
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDEFE1 !important;text-align: right;">2.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFCFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCDDBF !important;text-align: right;">2.9</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF5ED !important;text-align: right;">1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF2E7 !important;text-align: right;">1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF8F2 !important;text-align: right;">1.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCFA !important;text-align: right;">0.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFAF7 !important;text-align: right;">0.5</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+44.5
+</td>
+<td style="text-align:left;">
+m
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FAFBFD !important;text-align: right;">-0.2</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF4EA !important;text-align: right;">1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFBF8 !important;text-align: right;">0.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF6EE !important;text-align: right;">1.3</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDECDC !important;text-align: right;">2.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF4EB !important;text-align: right;">1.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D7E1EF !important;text-align: right;">-2.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F1F5F9 !important;text-align: right;">-1.5</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+45.1
+</td>
+<td style="text-align:left;">
+f
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F5FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F7F9FC !important;text-align: right;">-0.8</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF2E6 !important;text-align: right;">1.7</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F9FBFC !important;text-align: right;">-0.5</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #EFF3F9 !important;text-align: right;">-1.6</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FBFCFD !important;text-align: right;">-0.1</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #F2F5FA !important;text-align: right;">-1.4</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEF8F2 !important;text-align: right;">1.0</span>
+</td>
+<td style="text-align:left;">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FEFCF9 !important;text-align: right;">0.1</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session information</h1>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
+<pre><code>## R Under development (unstable) (2020-07-01 r78759)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Debian GNU/Linux bullseye/sid
+## 
+## Matrix products: default
+## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.13.so
+## 
+## locale:
+##  [1] LC_CTYPE=de_DE.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_DE.UTF-8        LC_COLLATE=C              
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=de_DE.UTF-8   
+##  [7] LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] survival_3.2-7 zlog_1.0.0    
+## 
+## loaded via a namespace (and not attached):
+##  [1] rstudioapi_0.13   knitr_1.31        xml2_1.3.2        magrittr_2.0.1   
+##  [5] splines_4.1.0     rvest_0.3.6       munsell_0.5.0     lattice_0.20-41  
+##  [9] colorspace_2.0-0  viridisLite_0.3.0 R6_2.5.0          rlang_0.4.10     
+## [13] stringr_1.4.0     highr_0.8         httr_1.4.2        tools_4.1.0      
+## [17] grid_4.1.0        webshot_0.5.2     xfun_0.21         htmltools_0.5.1.1
+## [21] yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0   Matrix_1.3-2     
+## [25] kableExtra_1.3.1  glue_1.4.2        evaluate_0.14     rmarkdown_2.6    
+## [29] stringi_1.5.3     compiler_4.1.0    scales_1.1.1</code></pre>
+</div>
+<div id="references" class="section level1">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent">
+<div id="ref-haeckel2015">
+<p>Haeckel, Rainer, Werner Wosniok, Ebrhard Gurr, and Burkhard Peil. 2015. “Permissible Limits for Uncertainty of Measurement in Laboratory Medicine.” <em>Clinical Chemistry and Laboratory Medicine</em> 53 (8): 1161–71. <a href="https://doi.org/10.1515/cclm-2014-0874">https://doi.org/10.1515/cclm-2014-0874</a>.</p>
+</div>
+<div id="ref-hoffmann2017">
+<p>Hoffmann, Georg, Frank Klawonn, Ralf Lichtinghagen, and Matthias Orth. 2017. “The Zlog-Value as Basis for the Standardization of Laboratory Results.” <em>LaboratoriumsMedizin</em> 41 (1): 23–32. <a href="https://doi.org/10.1515/labmed-2016-0087">https://doi.org/10.1515/labmed-2016-0087</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -62,7 +62,7 @@ lookup_limits <- function(age, sex, table) {
         stop("'sex' has to be a factor of at most 2 levels ",
              "(male, female).")
 
-    cn <- colnames(table)
+    cn <- colnames(table) <- tolower(colnames(table))
     if (!all(c("age", "sex", "lower", "upper") %in% cn))
         stop("'table' has to have the columns: ",
              "\"age\", \"sex\", \"upper\", \"lower\".")
@@ -122,22 +122,26 @@ lookup_limits <- function(age, sex, table) {
     }
 
     cnx <- colnames(x)
+    cnxl <- tolower(cnx)
 
-    if (!"age" %in% cnx)
+    if (!"age" %in% cnxl)
         stop("Column \"age\" is missing in 'x'.")
-    if (!"sex" %in% cnx)
+    if (!"sex" %in% cnxl)
         stop("Column \"sex\" is missing in 'x'.")
 
-    cnl <- colnames(limits)
 
-    if (!is.data.frame(limits) ||
-        !all(c("age", "sex", "param", "lower", "upper") %in% cnl))
+    if (!is.data.frame(limits))
+        stop("'limits' has to be a data.frame.")
+
+    cnl <- colnames(limits) <- tolower(colnames(limits))
+
+    if (!all(c("age", "sex", "param", "lower", "upper") %in% cnl))
         stop("'limits' has to be a data.frame with the following columns: ",
              "\"age\", \"sex\", \"param\", \"upper\", \"lower\".\n",
              "See '?lookup_limits' for details.")
 
     num <- vapply(x, is.numeric, FALSE, USE.NAMES = FALSE) &
-        !cnx %in% c("age", "sex")
+        !cnxl %in% c("age", "sex")
 
     if (any(!cnx[num] %in% limits$param)) {
         na <- cnx[num & (!cnx %in% limits$param)]
@@ -149,5 +153,8 @@ lookup_limits <- function(age, sex, table) {
             cbind.data.frame(param = na, age = 0L, sex = "both")
     }
 
-    lookup_limits(x$age, x$sex, limits[limits$param %in% cnx[num],])
+    lookup_limits(
+        age = x[[which(cnxl == "age")]], sex = x[[which(cnxl == "sex")]],
+        table = limits[limits$param %in% cnx[num],]
+    )
 }

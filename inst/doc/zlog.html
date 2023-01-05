@@ -14,6 +14,19 @@
 
 <title>Z(log) Transformation for Laboratory Measurements</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 <script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
 // v0.0.1
 // Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
@@ -265,7 +278,15 @@ border: 0;
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -338,13 +359,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -564,19 +592,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><span class="math display">\[zlog = (\log(x) - (\log(limits_1) + \log(limits_2))/2) * 3.92/(\log(limits_2) - \log(limits_1))\]</span></p>
 <p>Where <span class="math inline">\(x\)</span> is the measured laboratory value and <span class="math inline">\(limits_1\)</span> and <span class="math inline">\(limits_2\)</span> are the lower and upper reference limit, respectively.</p>
 <p>Example data and reference limits are taken from <span class="citation">Hoffmann et al. (2017)</span>, Table 2.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&quot;zlog&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>albumin &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">42</span>, <span class="dv">34</span>, <span class="dv">38</span>, <span class="dv">43</span>, <span class="dv">50</span>, <span class="dv">42</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">24</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">z</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(<span class="st">&quot;zlog&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>albumin &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">42</span>, <span class="dv">34</span>, <span class="dv">38</span>, <span class="dv">43</span>, <span class="dv">50</span>, <span class="dv">42</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">24</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">z</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
 <pre><code>## [1] -0.345876 -2.190548 -1.268212 -0.115292  1.498796 -0.345876 -3.804636
 ## [8] -2.882300 -4.496388</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">zlog</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">zlog</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
 <pre><code>## [1] -0.15472223 -2.24698167 -1.14569028  0.07826303  1.57162335 -0.15472223
 ## [7] -4.52949253 -3.16160843 -5.69571148</code></pre>
 </div>
 <div id="inverse-z-or-zlog-transformationundo-transformation" class="section level1">
 <h1>Inverse Z or Z(log) Transformation/Undo Transformation</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">izlog</span>(<span class="kw">zlog</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>)), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">izlog</span>(<span class="kw">zlog</span>(albumin, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>)), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">52</span>))</span></code></pre></div>
 <pre><code>## [1] 42 34 38 43 50 42 27 31 24</code></pre>
 </div>
 <div id="zlog-dependent-colour-gradient" class="section level1">
@@ -767,29 +795,29 @@ hepatitis with cirrhosis
 <div id="estimate-reference-limits" class="section level1">
 <h1>Estimate Reference Limits</h1>
 <p>The <code>reference_limits</code> functions calculates the lower and upper 2.5 or 97.5 (or a user given probability) quantiles:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">reference_limits</span>(albumin)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">reference_limits</span>(albumin)</span></code></pre></div>
 <pre><code>## lower upper 
 ##  24.6  48.6</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">reference_limits</span>(albumin, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">reference_limits</span>(albumin, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code></pre></div>
 <pre><code>## lower upper 
 ##  25.2  47.2</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">exp</span>(<span class="kw">reference_limits</span>(<span class="kw">log</span>(albumin)))</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">exp</span>(<span class="kw">reference_limits</span>(<span class="kw">log</span>(albumin)))</span></code></pre></div>
 <pre><code>##    lower    upper 
 ## 24.57207 48.51429</code></pre>
 </div>
 <div id="working-with-reference-tables" class="section level1">
 <h1>Working with Reference Tables</h1>
 <p>Most laboratories use their own age- and sex-specific reference limits. The <code>lookup_limits</code> function could be used to find the correct reference limit.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># toy example</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>reference &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb13-3"><a href="#cb13-3"></a>    <span class="dt">param =</span> <span class="kw">c</span>(<span class="st">&quot;albumin&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;bilirubin&quot;</span>, <span class="dv">4</span>)),</span>
-<span id="cb13-4"><a href="#cb13-4"></a>    <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">7</span>),     <span class="co"># days</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a>    <span class="dt">sex =</span> <span class="st">&quot;both&quot;</span>,</span>
-<span id="cb13-6"><a href="#cb13-6"></a>    <span class="dt">units =</span> <span class="kw">c</span>(<span class="st">&quot;g/l&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;µmol/l&quot;</span>, <span class="dv">4</span>)), <span class="co"># ignored</span></span>
-<span id="cb13-7"><a href="#cb13-7"></a>    <span class="dt">lower =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">4</span>)),  <span class="co"># no real reference values</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a>    <span class="dt">upper =</span> <span class="kw">c</span>(<span class="dv">52</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">18</span>) <span class="co"># no real reference values</span></span>
-<span id="cb13-9"><a href="#cb13-9"></a>)</span>
-<span id="cb13-10"><a href="#cb13-10"></a>knitr<span class="op">::</span><span class="kw">kable</span>(reference)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co"># toy example</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>reference &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    <span class="dt">param =</span> <span class="kw">c</span>(<span class="st">&quot;albumin&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;bilirubin&quot;</span>, <span class="dv">4</span>)),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">7</span>),     <span class="co"># days</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>    <span class="dt">sex =</span> <span class="st">&quot;both&quot;</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>    <span class="dt">units =</span> <span class="kw">c</span>(<span class="st">&quot;g/l&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;µmol/l&quot;</span>, <span class="dv">4</span>)), <span class="co"># ignored</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>    <span class="dt">lower =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">4</span>)),  <span class="co"># no real reference values</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>    <span class="dt">upper =</span> <span class="kw">c</span>(<span class="dv">52</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">18</span>) <span class="co"># no real reference values</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>knitr<span class="op">::</span><span class="kw">kable</span>(reference)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -916,29 +944,29 @@ NA
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># lookup albumin reference values for 18 year old woman</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">lookup_limits</span>(</span>
-<span id="cb14-3"><a href="#cb14-3"></a>    <span class="dt">age =</span> <span class="dv">18</span> <span class="op">*</span><span class="st"> </span><span class="fl">365.25</span>,</span>
-<span id="cb14-4"><a href="#cb14-4"></a>    <span class="dt">sex =</span> <span class="st">&quot;female&quot;</span>,</span>
-<span id="cb14-5"><a href="#cb14-5"></a>    <span class="dt">table =</span> reference[reference<span class="op">$</span>param <span class="op">==</span><span class="st"> &quot;albumin&quot;</span>,]</span>
-<span id="cb14-6"><a href="#cb14-6"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co"># lookup albumin reference values for 18 year old woman</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="kw">lookup_limits</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    <span class="dt">age =</span> <span class="dv">18</span> <span class="op">*</span><span class="st"> </span><span class="fl">365.25</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="dt">sex =</span> <span class="st">&quot;female&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>    <span class="dt">table =</span> reference[reference<span class="op">$</span>param <span class="op">==</span><span class="st"> &quot;albumin&quot;</span>,]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>)</span></code></pre></div>
 <pre><code>##         lower upper
 ## albumin    35    52</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># lookup albumin and bilirubin values for 18 year old woman</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">lookup_limits</span>(</span>
-<span id="cb16-3"><a href="#cb16-3"></a>    <span class="dt">age =</span> <span class="dv">18</span> <span class="op">*</span><span class="st"> </span><span class="fl">365.25</span>,</span>
-<span id="cb16-4"><a href="#cb16-4"></a>    <span class="dt">sex =</span> <span class="st">&quot;female&quot;</span>,</span>
-<span id="cb16-5"><a href="#cb16-5"></a>    <span class="dt">table =</span> reference</span>
-<span id="cb16-6"><a href="#cb16-6"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co"># lookup albumin and bilirubin values for 18 year old woman</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="kw">lookup_limits</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>    <span class="dt">age =</span> <span class="dv">18</span> <span class="op">*</span><span class="st"> </span><span class="fl">365.25</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    <span class="dt">sex =</span> <span class="st">&quot;female&quot;</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="dt">table =</span> reference</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>)</span></code></pre></div>
 <pre><code>##           lower upper
 ## albumin      35    52
 ## bilirubin    NA    18</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># lookup bilirubin reference values for infants</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">lookup_limits</span>(</span>
-<span id="cb18-3"><a href="#cb18-3"></a>    <span class="dt">age =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>,</span>
-<span id="cb18-4"><a href="#cb18-4"></a>    <span class="dt">sex =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>), <span class="dv">5</span><span class="op">:</span><span class="dv">4</span>),</span>
-<span id="cb18-5"><a href="#cb18-5"></a>    <span class="dt">table =</span> reference[reference<span class="op">$</span>param <span class="op">==</span><span class="st"> &quot;bilirubin&quot;</span>,]</span>
-<span id="cb18-6"><a href="#cb18-6"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="co"># lookup bilirubin reference values for infants</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="kw">lookup_limits</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>    <span class="dt">age =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>    <span class="dt">sex =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>), <span class="dv">5</span><span class="op">:</span><span class="dv">4</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>    <span class="dt">table =</span> reference[reference<span class="op">$</span>param <span class="op">==</span><span class="st"> &quot;bilirubin&quot;</span>,]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>)</span></code></pre></div>
 <pre><code>##           lower upper
 ## bilirubin    NA    NA
 ## bilirubin    NA     5
@@ -953,16 +981,16 @@ NA
 <div id="missing-reference-limits" class="section level1">
 <h1>Missing Reference Limits</h1>
 <p>Sometimes reference limits are not specified. That is often the case for biomarkers that are related to infection or cancer. Using zero as lower boundary results in skewed distributions <span class="citation">(Hoffmann et al. 2017, fig. 7)</span>. <span class="citation">Haeckel et al. (2015)</span> suggested to set the lower reference limit to 15 % of the upper one.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># use default fractions</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">set_missing_limits</span>(reference)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co"># use default fractions</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a><span class="kw">set_missing_limits</span>(reference)</span></code></pre></div>
 <pre><code>##       param age  sex  units lower upper
 ## 1   albumin   0 both    g/l 35.00    52
 ## 2 bilirubin   1 both µmol/l  0.75     5
 ## 3 bilirubin   2 both µmol/l  1.20     8
 ## 4 bilirubin   3 both µmol/l  1.95    13
 ## 5 bilirubin   7 both µmol/l  2.70    18</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># set fractions manually</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">set_missing_limits</span>(reference, <span class="dt">fraction =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="dv">5</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="co"># set fractions manually</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="kw">set_missing_limits</span>(reference, <span class="dt">fraction =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="dv">5</span>))</span></code></pre></div>
 <pre><code>##       param age  sex  units lower upper
 ## 1   albumin   0 both    g/l  35.0    52
 ## 2 bilirubin   1 both µmol/l   1.0     5
@@ -973,20 +1001,20 @@ NA
 <div id="impute-missing-laboratory-measurements" class="section level1">
 <h1>Impute Missing Laboratory Measurements</h1>
 <p>If laboratory measurements are missing they could be imputed using <em>“normal”</em> values from the reference table. Using the <code>&quot;logmean&quot;</code> (default) or <code>&quot;mean&quot;</code> reference value (default) will result in a <span class="math inline">\(zlog\)</span> or <span class="math inline">\(z\)</span>-value of zero, respectively.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb24-2"><a href="#cb24-2"></a>    <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">50</span>),</span>
-<span id="cb24-3"><a href="#cb24-3"></a>    <span class="dt">sex =</span> <span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>),</span>
-<span id="cb24-4"><a href="#cb24-4"></a>    <span class="dt">albumin =</span> <span class="kw">c</span>(<span class="dv">42</span>, <span class="ot">NA</span>)</span>
-<span id="cb24-5"><a href="#cb24-5"></a>)</span>
-<span id="cb24-6"><a href="#cb24-6"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>    <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">50</span>),</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>    <span class="dt">sex =</span> <span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>    <span class="dt">albumin =</span> <span class="kw">c</span>(<span class="dv">42</span>, <span class="ot">NA</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a>x</span></code></pre></div>
 <pre><code>##   age    sex albumin
 ## 1  40 female      42
 ## 2  50   male      NA</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">z_df</span>(<span class="kw">impute_df</span>(x, reference, <span class="dt">method =</span> <span class="st">&quot;mean&quot;</span>), reference)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">z_df</span>(<span class="kw">impute_df</span>(x, reference, <span class="dt">method =</span> <span class="st">&quot;mean&quot;</span>), reference)</span></code></pre></div>
 <pre><code>##   age    sex   albumin
 ## 1  40 female -0.345876
 ## 2  50   male  0.000000</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">zlog_df</span>(<span class="kw">impute_df</span>(x, reference), reference)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="kw">zlog_df</span>(<span class="kw">impute_df</span>(x, reference), reference)</span></code></pre></div>
 <pre><code>##   age    sex    albumin
 ## 1  40 female -0.1547222
 ## 2  50   male  0.0000000</code></pre>
@@ -994,14 +1022,14 @@ NA
 <div id="pbc-example" class="section level1">
 <h1><code>PBC</code> Example</h1>
 <p>For demonstration we choose the <code>pbc</code> dataset from the <code>survival</code> package and exclude all non-laboratory measurements except <em>age</em> and <em>sex</em>:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">library</span>(<span class="st">&quot;survival&quot;</span>)</span>
-<span id="cb30-2"><a href="#cb30-2"></a><span class="kw">data</span>(<span class="st">&quot;pbc&quot;</span>)</span>
-<span id="cb30-3"><a href="#cb30-3"></a>labs &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
-<span id="cb30-4"><a href="#cb30-4"></a>    <span class="st">&quot;bili&quot;</span>, <span class="st">&quot;chol&quot;</span>, <span class="st">&quot;albumin&quot;</span>, <span class="st">&quot;copper&quot;</span>, <span class="st">&quot;alk.phos&quot;</span>, <span class="st">&quot;ast&quot;</span>, <span class="st">&quot;trig&quot;</span>,</span>
-<span id="cb30-5"><a href="#cb30-5"></a>    <span class="st">&quot;platelet&quot;</span>, <span class="st">&quot;protime&quot;</span></span>
-<span id="cb30-6"><a href="#cb30-6"></a>)</span>
-<span id="cb30-7"><a href="#cb30-7"></a>pbc &lt;-<span class="st"> </span>pbc[, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;sex&quot;</span>, labs)]</span>
-<span id="cb30-8"><a href="#cb30-8"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(pbc), <span class="dt">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a><span class="kw">library</span>(<span class="st">&quot;survival&quot;</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&quot;pbc&quot;</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true"></a>labs &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true"></a>    <span class="st">&quot;bili&quot;</span>, <span class="st">&quot;chol&quot;</span>, <span class="st">&quot;albumin&quot;</span>, <span class="st">&quot;copper&quot;</span>, <span class="st">&quot;alk.phos&quot;</span>, <span class="st">&quot;ast&quot;</span>, <span class="st">&quot;trig&quot;</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true"></a>    <span class="st">&quot;platelet&quot;</span>, <span class="st">&quot;protime&quot;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true"></a>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true"></a>pbc &lt;-<span class="st"> </span>pbc[, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;sex&quot;</span>, labs)]</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(pbc), <span class="dt">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1254,28 +1282,28 @@ NA
 </tbody>
 </table>
 <p>Next we estimate all reference limits from the data. We want to use sex-specific values for copper and aspartate aminotransferase (<code>&quot;ast&quot;</code>).</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">## replicate copper and ast 2 times, use the others just once</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>param &lt;-<span class="st"> </span><span class="kw">rep</span>(labs, <span class="kw">ifelse</span>(labs <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;copper&quot;</span>, <span class="st">&quot;ast&quot;</span>), <span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb31-3"><a href="#cb31-3"></a>sex &lt;-<span class="st"> </span><span class="kw">rep_len</span>(<span class="st">&quot;both&quot;</span>, <span class="kw">length</span>(param))</span>
-<span id="cb31-4"><a href="#cb31-4"></a></span>
-<span id="cb31-5"><a href="#cb31-5"></a><span class="co">## replace sex == both with female and male for copper and ast</span></span>
-<span id="cb31-6"><a href="#cb31-6"></a>sex[param <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;copper&quot;</span>, <span class="st">&quot;ast&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>)</span>
-<span id="cb31-7"><a href="#cb31-7"></a></span>
-<span id="cb31-8"><a href="#cb31-8"></a><span class="co">## create data.frame, we ignore age-specific values for now and set age to zero</span></span>
-<span id="cb31-9"><a href="#cb31-9"></a><span class="co">## (means applicable for all ages)</span></span>
-<span id="cb31-10"><a href="#cb31-10"></a>reference &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb31-11"><a href="#cb31-11"></a>    <span class="dt">param =</span> param, <span class="dt">age =</span> <span class="dv">0</span>, <span class="dt">sex =</span> sex, <span class="dt">lower =</span> <span class="ot">NA</span>, <span class="dt">upper =</span> <span class="ot">NA</span></span>
-<span id="cb31-12"><a href="#cb31-12"></a>)</span>
-<span id="cb31-13"><a href="#cb31-13"></a></span>
-<span id="cb31-14"><a href="#cb31-14"></a><span class="co">## estimate reference limits from sample data</span></span>
-<span id="cb31-15"><a href="#cb31-15"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_len</span>(<span class="kw">nrow</span>(reference))) {</span>
-<span id="cb31-16"><a href="#cb31-16"></a>    reference[i, <span class="kw">c</span>(<span class="st">&quot;lower&quot;</span>, <span class="st">&quot;upper&quot;</span>)] &lt;-</span>
-<span id="cb31-17"><a href="#cb31-17"></a><span class="st">        </span><span class="cf">if</span> (reference<span class="op">$</span>sex[i] <span class="op">==</span><span class="st"> &quot;both&quot;</span>)</span>
-<span id="cb31-18"><a href="#cb31-18"></a>            <span class="kw">reference_limits</span>(pbc[reference<span class="op">$</span>param[i]])</span>
-<span id="cb31-19"><a href="#cb31-19"></a>        <span class="cf">else</span></span>
-<span id="cb31-20"><a href="#cb31-20"></a>            <span class="kw">reference_limits</span>(pbc[pbc<span class="op">$</span>sex <span class="op">==</span><span class="st"> </span>reference<span class="op">$</span>sex[i], reference<span class="op">$</span>param[i]])</span>
-<span id="cb31-21"><a href="#cb31-21"></a>}</span>
-<span id="cb31-22"><a href="#cb31-22"></a>knitr<span class="op">::</span><span class="kw">kable</span>(reference)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a><span class="co">## replicate copper and ast 2 times, use the others just once</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true"></a>param &lt;-<span class="st"> </span><span class="kw">rep</span>(labs, <span class="kw">ifelse</span>(labs <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;copper&quot;</span>, <span class="st">&quot;ast&quot;</span>), <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true"></a>sex &lt;-<span class="st"> </span><span class="kw">rep_len</span>(<span class="st">&quot;both&quot;</span>, <span class="kw">length</span>(param))</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true"></a><span class="co">## replace sex == both with female and male for copper and ast</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true"></a>sex[param <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;copper&quot;</span>, <span class="st">&quot;ast&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true"></a><span class="co">## create data.frame, we ignore age-specific values for now and set age to zero</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true"></a><span class="co">## (means applicable for all ages)</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true"></a>reference &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true"></a>    <span class="dt">param =</span> param, <span class="dt">age =</span> <span class="dv">0</span>, <span class="dt">sex =</span> sex, <span class="dt">lower =</span> <span class="ot">NA</span>, <span class="dt">upper =</span> <span class="ot">NA</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true"></a>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true"></a><span class="co">## estimate reference limits from sample data</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_len</span>(<span class="kw">nrow</span>(reference))) {</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true"></a>    reference[i, <span class="kw">c</span>(<span class="st">&quot;lower&quot;</span>, <span class="st">&quot;upper&quot;</span>)] &lt;-</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true"></a><span class="st">        </span><span class="cf">if</span> (reference<span class="op">$</span>sex[i] <span class="op">==</span><span class="st"> &quot;both&quot;</span>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true"></a>            <span class="kw">reference_limits</span>(pbc[reference<span class="op">$</span>param[i]])</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true"></a>        <span class="cf">else</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true"></a>            <span class="kw">reference_limits</span>(pbc[pbc<span class="op">$</span>sex <span class="op">==</span><span class="st"> </span>reference<span class="op">$</span>sex[i], reference<span class="op">$</span>param[i]])</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true"></a>}</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true"></a>knitr<span class="op">::</span><span class="kw">kable</span>(reference)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1487,12 +1515,12 @@ both
 </tbody>
 </table>
 <p>The <code>pbc</code> dataset contains a few missing values. We impute the with the corresponding mean reference value (which is in this example just the sample mean but would be in real life the mean of a e.g. healthy subpopulation).</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>pbc[<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">14</span>),]</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a>pbc[<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">14</span>),]</span></code></pre></div>
 <pre><code>##         age sex bili chol albumin copper alk.phos ast trig platelet protime
 ## 6  66.25873   f  0.8  248    3.98     50      944  93   63       NA      11
 ## 14 56.22177   m  0.8   NA    2.27     43      728  71   NA      156      11</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>pbc &lt;-<span class="st"> </span><span class="kw">impute_df</span>(pbc, reference)</span>
-<span id="cb34-2"><a href="#cb34-2"></a>pbc[<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">14</span>),]</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a>pbc &lt;-<span class="st"> </span><span class="kw">impute_df</span>(pbc, reference)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true"></a>pbc[<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">14</span>),]</span></code></pre></div>
 <pre><code>##         age sex bili     chol albumin copper alk.phos ast     trig platelet
 ## 6  66.25873   f  0.8 248.0000    3.98     50      944  93  63.0000 211.3954
 ## 14 56.22177   m  0.8 434.8386    2.27     43      728  71 120.6507 156.0000
@@ -1500,7 +1528,7 @@ both
 ## 6       11
 ## 14      11</code></pre>
 <p>Subsequently we can convert the laboratory measurements into <span class="math inline">\(z(log)\)</span>-values using the <code>zlog_df</code> function that applies the <code>zlog</code> for every <code>numeric</code> column in a <code>data.frame</code> (except the <code>&quot;age&quot;</code> column):</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>pbc &lt;-<span class="st"> </span><span class="kw">zlog_df</span>(pbc, reference)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a>pbc &lt;-<span class="st"> </span><span class="kw">zlog_df</span>(pbc, reference)</span></code></pre></div>
 <table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2420,13 +2448,14 @@ f
 </div>
 <div id="session-information" class="section level1">
 <h1>Session information</h1>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
-<pre><code>## R Under development (unstable) (2020-07-01 r78759)
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
+<pre><code>## R version 4.2.2 (2022-10-31)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Debian GNU/Linux bullseye/sid
+## Running under: Debian GNU/Linux 11 (bullseye)
 ## 
 ## Matrix products: default
-## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.13.so
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
 ##  [1] LC_CTYPE=de_DE.UTF-8       LC_NUMERIC=C              
@@ -2440,19 +2469,22 @@ f
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] survival_3.2-7 zlog_1.0.0    
+## [1] survival_3.2-7 zlog_1.0.2    
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] rstudioapi_0.13   knitr_1.31        xml2_1.3.2        magrittr_2.0.1   
-##  [5] splines_4.1.0     rvest_0.3.6       munsell_0.5.0     lattice_0.20-41  
-##  [9] colorspace_2.0-0  viridisLite_0.3.0 R6_2.5.0          rlang_0.4.10     
-## [13] stringr_1.4.0     highr_0.8         httr_1.4.2        tools_4.1.0      
-## [17] grid_4.1.0        webshot_0.5.2     xfun_0.21         htmltools_0.5.1.1
-## [21] yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0   Matrix_1.3-2     
-## [25] kableExtra_1.3.1  glue_1.4.2        evaluate_0.14     rmarkdown_2.6    
-## [29] stringi_1.5.3     compiler_4.1.0    scales_1.1.1</code></pre>
+##  [1] bslib_0.4.2       compiler_4.2.2    jquerylib_0.1.4   highr_0.10       
+##  [5] tools_4.2.2       digest_0.6.31     lattice_0.20-41   jsonlite_1.8.4   
+##  [9] evaluate_0.19     lifecycle_1.0.3   viridisLite_0.4.1 rlang_1.0.6      
+## [13] Matrix_1.5-3      cli_3.5.0         rstudioapi_0.14   yaml_2.3.6       
+## [17] xfun_0.36         fastmap_1.1.0     kableExtra_1.3.4  httr_1.4.4       
+## [21] stringr_1.5.0     knitr_1.41        xml2_1.3.3        vctrs_0.5.1      
+## [25] sass_0.4.4        systemfonts_1.0.4 grid_4.2.2        webshot_0.5.4    
+## [29] svglite_2.1.0     glue_1.6.2        R6_2.5.1          rmarkdown_2.19   
+## [33] magrittr_2.0.3    scales_1.2.1      htmltools_0.5.4   splines_4.2.2    
+## [37] rvest_1.0.3       colorspace_2.0-3  stringi_1.7.8     munsell_0.5.0    
+## [41] cachem_1.0.6</code></pre>
 </div>
-<div id="references" class="section level1">
+<div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references hanging-indent">
 <div id="ref-haeckel2015">
